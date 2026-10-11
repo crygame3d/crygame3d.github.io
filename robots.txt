@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://crygame3d.github.io/sitemap.xml

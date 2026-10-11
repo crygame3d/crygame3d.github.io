@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gridfire Arena - Free Online FPS Shooter Game</title>
+<meta name="description" content="Play Gridfire Arena free in your browser: a fast first-person arena shooter with smart bots, three weapons and three difficulty levels. No download, no sign-up.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0b1118">
+<!-- REPLACE https://crygame3d.github.io/ with your real address in this file, sitemap.xml and robots.txt -->
+<link rel="canonical" href="https://crygame3d.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gridfire Arena">
+<meta property="og:title" content="Gridfire Arena - Free Online FPS Shooter Game">
+<meta property="og:description" content="Fast first-person arena shooter in your browser. Beat smart bots with three weapons. No download needed.">
+<meta property="og:url" content="https://crygame3d.github.io/">
+<meta property="og:image" content="https://crygame3d.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Gridfire Arena game title over a neon arena">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gridfire Arena - Free Online FPS Shooter Game">
+<meta name="twitter:description" content="Fast first-person arena shooter in your browser. No download needed.">
+<meta name="twitter:image" content="https://crygame3d.github.io/og-image.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1118'/%3E%3Ccircle cx='32' cy='32' r='15' fill='none' stroke='%232ee6a6' stroke-width='5'/%3E%3Cpath d='M32 6v14M32 44v14M6 32h14M44 32h14' stroke='%23ffb347' stroke-width='5'/%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebSite","name":"Gridfire Arena","url":"https://crygame3d.github.io/"},
+{"@type":"VideoGame","name":"Gridfire Arena","url":"https://crygame3d.github.io/","description":"A free first-person arena shooter that runs in the browser. Fight smart bots with three weapons and reach 25 eliminations to win.","genre":["Shooter","Action","First-person shooter"],"gamePlatform":"Web browser","applicationCategory":"Game","operatingSystem":"Any desktop browser","playMode":"SinglePlayer","inLanguage":"en","image":"https://crygame3d.github.io/og-image.png","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is Gridfire Arena free to play?","acceptedAnswer":{"@type":"Answer","text":"Yes. Gridfire Arena is completely free. There is no download, no account and no payment."}},
+{"@type":"Question","name":"Does Gridfire Arena work on mobile?","acceptedAnswer":{"@type":"Answer","text":"The game is built for keyboard and mouse, so it is best played on a desktop or laptop computer."}},
+{"@type":"Question","name":"Is Gridfire Arena multiplayer?","acceptedAnswer":{"@type":"Answer","text":"Right now you play against computer-controlled bots. You choose Easy, Normal or Hard."}},
+{"@type":"Question","name":"How do I win a match?","acceptedAnswer":{"@type":"Answer","text":"Eliminate 25 bots before you fall behind. Collect health packs and use cover to stay alive."}},
+{"@type":"Question","name":"Can I change the mouse sensitivity?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the sensitivity slider on the start screen. Your choice is remembered in your browser."}},
+{"@type":"Question","name":"Which browsers can run the game?","acceptedAnswer":{"@type":"Answer","text":"Any modern desktop browser such as Chrome, Edge, Firefox or Safari."}}
+]}
+]}
+</script>
+
+<style>
+:root{--bg:#0b1118;--panel:#17222e;--panel2:#1e2c3a;--line:#2a3b4d;--text:#e8eef5;--muted:#9fb2c6;--accent:#2ee6a6;--accent2:#ffb347;--hot:#ff6b6b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.65}
+a{color:var(--accent)}
+.skip{position:absolute;left:-999px;top:0;background:var(--accent);color:#06241a;padding:8px 12px;z-index:100}
+.skip:focus{left:8px;top:8px}
+header.site{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 20px;background:var(--panel);border-bottom:1px solid var(--line)}
+.logo{font-weight:800;font-size:20px;letter-spacing:.5px;color:var(--text);text-decoration:none}
+.logo b{color:var(--accent)}
+header.site nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+header.site nav a{color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:8px;font-weight:600;font-size:14.5px}
+header.site nav a:hover{background:var(--panel2);color:var(--text)}
+main{max-width:1100px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:clamp(24px,4vw,34px);line-height:1.2;margin:6px 0 6px}
+.lead{color:var(--muted);margin:0 0 16px;max-width:760px}
+h2{font-size:24px;margin:34px 0 10px;line-height:1.25}
+h3{font-size:18px;margin:18px 0 4px}
+p{margin:8px 0}
+
+/* game */
+.game{position:relative;width:100%;aspect-ratio:16/9;background:#05080c;border:1px solid var(--line);border-radius:12px;overflow:hidden;user-select:none;-webkit-user-select:none}
+.game:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;border:0;border-radius:0}
+#cv{display:block;width:100%;height:100%;image-rendering:auto;cursor:crosshair}
+.hide{display:none!important}
+.ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,10,15,.72);padding:12px;overflow:auto}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 22px;max-width:430px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.box .ttl{margin:0 0 4px;font-size:28px;font-weight:800;line-height:1.25}
+.box .ttl b{color:var(--accent)}
+.box p{margin:6px 0;color:var(--muted);font-size:14px}
+.row{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.seg{flex:1;padding:9px 6px;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:9px;font:inherit;font-weight:700;cursor:pointer}
+.seg[aria-pressed="true"]{background:var(--accent);color:#06241a;border-color:transparent}
+.btn{width:100%;padding:12px;border:0;border-radius:10px;background:var(--accent);color:#06241a;font:inherit;font-size:17px;font-weight:800;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn:focus-visible,.seg:focus-visible,.tool:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.sens{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;margin:8px 0}
+.sens input{flex:1}
+.keys{font-size:12.5px!important}
+.stat{display:flex;justify-content:space-around;margin:12px 0}
+.stat div{font-size:12.5px;color:var(--muted)}
+.stat b{display:block;font-size:22px;color:var(--accent2)}
+
+/* HUD */
+#hud{position:absolute;inset:0;pointer-events:none;font-weight:700;text-shadow:0 1px 3px #000}
+#hud .tl{position:absolute;left:3%;top:3%;font-size:clamp(11px,1.8vw,18px)}
+#hud .tl span{display:block}
+#mini{position:absolute;right:2%;top:3%;width:12%;min-width:70px;aspect-ratio:1;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.35);border-radius:6px}
+#hud .bl{position:absolute;left:3%;bottom:4%;width:24%}
+#hpbar{height:clamp(7px,1.3vw,14px);background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.3);border-radius:4px;overflow:hidden}
+#hpfill{height:100%;width:100%;background:linear-gradient(90deg,#2ee6a6,#9bf56b)}
+#hptext{font-size:clamp(11px,1.7vw,16px)}
+#hud .br{position:absolute;right:3%;bottom:4%;text-align:right;font-size:clamp(11px,1.8vw,18px)}
+#ammo{font-size:clamp(18px,3.4vw,34px);color:var(--accent2);line-height:1}
+#msg{position:absolute;left:0;right:0;top:12%;text-align:center;font-size:clamp(12px,2vw,20px);color:#fff}
+#cross{position:absolute;left:50%;top:50%;width:0;height:0}
+#cross i{position:absolute;background:#fff;opacity:.9;box-shadow:0 0 2px #000}
+#cross .a{left:-1px;top:-12px;width:2px;height:7px}
+#cross .b{left:-1px;top:5px;width:2px;height:7px}
+#cross .c{left:-12px;top:-1px;width:7px;height:2px}
+#cross .d{left:5px;top:-1px;width:7px;height:2px}
+#hit{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border:2px solid #ff4d4d;transform:rotate(45deg);opacity:0;transition:opacity .15s}
+#hit.on{opacity:1;transition:none}
+#dmg{position:absolute;inset:0;box-shadow:inset 0 0 90px 30px rgba(255,40,40,.75);opacity:0;transition:opacity .35s}
+#dmg.on{opacity:1;transition:none}
+.tools{position:absolute;left:50%;transform:translateX(-50%);bottom:6px;display:flex;gap:6px;z-index:5}
+.tool{background:rgba(23,34,46,.85);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:5px 9px;font:inherit;font-size:13px;cursor:pointer}
+
+/* content */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 20px 16px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left}
+th{color:var(--accent2);font-weight:700}
+kbd{background:var(--panel2);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 7px;font-size:13px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.grid3 article{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px 16px 14px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
+summary{cursor:pointer;font-weight:700}
+details p{color:var(--muted)}
+ul.tips{padding-left:20px}
+ul.tips li{margin:6px 0}
+footer.site{border-top:1px solid var(--line);background:var(--panel);padding:20px;text-align:center;color:var(--muted);font-size:13.5px}
+footer.site a{color:var(--muted)}
+.note{color:var(--muted);font-size:14px}
+@media (max-width:640px){header.site nav{margin-left:0}}
+</style>
+</head>
+<body>
+<a class="skip" href="#game">Skip to game</a>
+<header class="site">
+  <a class="logo" href="#top">Gridfire<b>Arena</b></a>
+  <nav aria-label="Page sections">
+    <a href="#game">Play</a>
+    <a href="#how-to-play">How to Play</a>
+    <a href="#weapons">Weapons</a>
+    <a href="#tips">Tips</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+</header>
+
+<main id="top">
+  <h1>Gridfire Arena: Free Online FPS Shooter</h1>
+  <p class="lead">Jump into a neon arena, pick a weapon and out-shoot a squad of smart bots. Gridfire Arena runs right in your browser. No download, no sign-up, no waiting.</p>
+
+  <div class="game" id="game" role="application" aria-label="Gridfire Arena game">
+    <canvas id="cv" aria-label="Gridfire Arena first-person view">Your browser does not support the canvas element needed to play Gridfire Arena.</canvas>
+
+    <div id="hud" class="hide" aria-live="off">
+      <div class="tl"><span id="kills">Eliminations 0 / 25</span><span id="timer">00:00</span></div>
+      <canvas id="mini" aria-hidden="true"></canvas>
+      <div class="bl"><div id="hptext">100 HP</div><div id="hpbar"><div id="hpfill"></div></div></div>
+      <div class="br"><div id="wpn">Pulse Rifle</div><div id="ammo">30</div></div>
+      <div id="msg" aria-live="polite"></div>
+      <div id="cross"><i class="a"></i><i class="b"></i><i class="c"></i><i class="d"></i></div>
+      <div id="hit"></div>
+      <div id="dmg"></div>
+    </div>
+
+    <div class="tools">
+      <button class="tool" id="mute" type="button" aria-label="Toggle sound" aria-pressed="false">Sound: On</button>
+      <button class="tool" id="fs" type="button" aria-label="Toggle fullscreen">Fullscreen</button>
+    </div>
+
+    <div class="ov" id="ov-menu">
+      <div class="box">
+        <div class="ttl">Gridfire<b>Arena</b></div>
+        <p>Eliminate 25 bots to win. Collect health packs. Stay moving.</p>
+        <div class="row" role="group" aria-label="Difficulty">
+          <button class="seg" type="button" id="d-easy" aria-pressed="false">Easy</button>
+          <button class="seg" type="button" id="d-normal" aria-pressed="true">Normal</button>
+          <button class="seg" type="button" id="d-hard" aria-pressed="false">Hard</button>
+        </div>
+        <label class="sens" for="sens">Mouse sensitivity <input id="sens" type="range" min="0.3" max="2" step="0.1" value="1"> <span id="sens-val">1.0</span></label>
+        <button class="btn" type="button" id="play">Play</button>
+        <p class="keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move &middot; Mouse aim &middot; Click fire &middot; <kbd>Space</kbd> jump &middot; <kbd>R</kbd> reload &middot; <kbd>1</kbd>-<kbd>3</kbd> weapons</p>
+        <p id="touchnote" class="hide">Gridfire Arena needs a keyboard and mouse. Please open it on a computer.</p>
+        <p id="bestline"></p>
+      </div>
+    </div>
+
+    <div class="ov hide" id="ov-pause">
+      <div class="box">
+        <div class="ttl">Paused</div>
+        <p>Click to get back into the fight.</p>
+        <button class="btn" type="button" id="resume">Resume</button>
+      </div>
+    </div>
+
+    <div class="ov hide" id="ov-end">
+      <div class="box">
+        <div class="ttl" id="end-title">Victory!</div>
+        <div class="stat">
+          <div><b id="e-time">0:00</b>Time</div>
+          <div><b id="e-kd">0 / 0</b>Elims / Deaths</div>
+          <div><b id="e-acc">0%</b>Accuracy</div>
+        </div>
+        <p id="e-best"></p>
+        <button class="btn" type="button" id="again">Play again</button>
+      </div>
+    </div>
+  </div>
+  <p class="note">Tip: click the game, then press <kbd>Esc</kbd> any time to pause. Best played on a desktop or laptop with a mouse.</p>
+
+  <section id="how-to-play" aria-labelledby="h-how">
+    <h2 id="h-how">How to Play Gridfire Arena</h2>
+    <p>Gridfire Arena is a single-player deathmatch. You and a crew of computer-controlled bots share one arena. Every time you eliminate a bot, your score goes up. Reach 25 eliminations to win the match, and try to do it faster every time.</p>
+    <div class="card">
+      <table>
+        <caption class="sr" style="position:absolute;left:-999px">Gridfire Arena controls</caption>
+        <thead><tr><th scope="col">Action</th><th scope="col">Control</th></tr></thead>
+        <tbody>
+          <tr><td>Move</td><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or arrow keys</td></tr>
+          <tr><td>Look and aim</td><td>Mouse (or <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to turn)</td></tr>
+          <tr><td>Fire</td><td>Left mouse button</td></tr>
+          <tr><td>Jump</td><td><kbd>Space</kbd></td></tr>
+          <tr><td>Sprint</td><td>Hold <kbd>Shift</kbd></td></tr>
+          <tr><td>Reload</td><td><kbd>R</kbd></td></tr>
+          <tr><td>Switch weapon</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> or mouse wheel</td></tr>
+          <tr><td>Mute sound</td><td><kbd>M</kbd></td></tr>
+          <tr><td>Fullscreen</td><td><kbd>F</kbd> or the Fullscreen button</td></tr>
+          <tr><td>Pause</td><td><kbd>Esc</kbd></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Game mode and difficulty</h3>
+    <p>The match ends when you reach 25 eliminations. If a bot defeats you, you respawn a couple of seconds later at the safest spawn point with full health and ammo. Health packs glow in several spots around the arena and come back after a short time. Your health also slowly recovers if you stay out of damage for a few seconds.</p>
+    <ul class="tips">
+      <li><strong>Easy:</strong> five bots with slower reactions and weak aim. A relaxed way to learn the arena.</li>
+      <li><strong>Normal:</strong> seven bots that react quickly and hit more often. The recommended starting point.</li>
+      <li><strong>Hard:</strong> nine fast, accurate bots. Expect to be flanked.</li>
+    </ul>
+    <p>Your best time for each difficulty is saved in your browser, so you can chase a new personal record.</p>
+  </section>
+
+  <section id="weapons" aria-labelledby="h-weapons">
+    <h2 id="h-weapons">Weapons in Gridfire Arena</h2>
+    <p>Three weapons cover close, medium and long range. Switch with the number keys depending on the fight.</p>
+    <div class="grid3">
+      <article>
+        <h3>1. Pulse Rifle</h3>
+        <p>An automatic all-rounder. Hold the fire button for steady damage at any range. Burst your shots to keep accuracy high.</p>
+      </article>
+      <article>
+        <h3>2. Scatter Cannon</h3>
+        <p>Fires a spread of energy pellets. Devastating up close, weak from far away. Use it in corridors and around corners.</p>
+      </article>
+      <article>
+        <h3>3. Rail Lance</h3>
+        <p>A slow, precise, high-damage shot that can eliminate a bot in one hit. Line up the crosshair and make every shot count.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="tips" aria-labelledby="h-tips">
+    <h2 id="h-tips">Tips to Win Faster</h2>
+    <ul class="tips">
+      <li><strong>Use cover.</strong> The pillars and walls break line of sight. Peek, shoot, then step back.</li>
+      <li><strong>Keep moving.</strong> Strafing makes you much harder to hit. Standing still is the fastest way to lose health.</li>
+      <li><strong>Watch the radar.</strong> The small map in the corner shows nearby bots so you can ambush them.</li>
+      <li><strong>Pick the right weapon.</strong> Scatter Cannon for tight spaces, Rail Lance for long lanes, Pulse Rifle for everything else.</li>
+      <li><strong>Reload in safety.</strong> Reloading takes time. Do it behind a wall, not in the open.</li>
+      <li><strong>Grab health packs.</strong> A quick detour to a pack is often better than pushing with low health.</li>
+    </ul>
+  </section>
+
+  <section id="faq" aria-labelledby="h-faq">
+    <h2 id="h-faq">Frequently Asked Questions</h2>
+    <details><summary>Is Gridfire Arena free to play?</summary><p>Yes. Gridfire Arena is completely free. There is no download, no account and no payment.</p></details>
+    <details><summary>Does Gridfire Arena work on mobile?</summary><p>The game is built for keyboard and mouse, so it is best played on a desktop or laptop computer.</p></details>
+    <details><summary>Is Gridfire Arena multiplayer?</summary><p>Right now you play against computer-controlled bots. You choose Easy, Normal or Hard.</p></details>
+    <details><summary>How do I win a match?</summary><p>Eliminate 25 bots before you fall behind. Collect health packs and use cover to stay alive.</p></details>
+    <details><summary>Can I change the mouse sensitivity?</summary><p>Yes. Use the sensitivity slider on the start screen. Your choice is remembered in your browser.</p></details>
+    <details><summary>Which browsers can run the game?</summary><p>Any modern desktop browser such as Chrome, Edge, Firefox or Safari.</p></details>
+  </section>
+
+  <section id="about" aria-labelledby="h-about">
+    <h2 id="h-about">About Gridfire Arena</h2>
+    <p>Gridfire Arena is an independent browser game with its own original arena, characters, weapons and sounds. It uses no external libraries and loads from a single page, so it starts quickly even on modest computers. The game stores only your settings and best times, locally in your browser.</p>
+  </section>
+</main>
+
+<footer class="site">
+  <p>&copy; 2026 Gridfire Arena. All rights reserved.</p>
+  <p>Gridfire Arena is an original game and is not affiliated with any other game or brand. <a href="#top">Back to top</a></p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var wrap = $('game'), cv = $('cv'), ctx = cv.getContext('2d');
+  var mm = $('mini'), mctx = mm.getContext('2d');
+  var RW = 640, RH = 360;
+  cv.width = RW; cv.height = RH;
+  mm.width = 128; mm.height = 128;
+  var PL = 0.72;                     // camera plane length (horizontal FOV ~ 71 deg)
+  var FOCAL = (RW / 2) / PL;
+  var zbuf = new Float32Array(RW);
+
+  /* ---------- map ---------- */
+  var MW = 32, MH = 32, map = new Uint8Array(MW * MH);
+  function rect(x, y, w, h, t) { for (var j = y; j < y + h; j++) for (var i = x; i < x + w; i++) map[j * MW + i] = t; }
+  rect(0, 0, MW, 1, 1); rect(0, MH - 1, MW, 1, 1); rect(0, 0, 1, MH, 1); rect(MW - 1, 0, 1, MH, 1);
+  [[5,5,4,1,3],[5,6,1,3,3],[23,5,4,1,3],[26,6,1,3,3],[5,26,4,1,3],[5,23,1,3,3],[23,26,4,1,3],[26,23,1,3,3],
+   [14,12,4,1,2],[14,19,4,1,2],[12,14,1,4,2],[19,14,1,4,2],[15,15,2,2,4],
+   [10,10,1,1,4],[21,10,1,1,4],[10,21,1,1,4],[21,21,1,1,4],
+   [2,14,2,4,1],[28,14,2,4,1],[14,2,4,2,1],[14,28,4,2,1],
+   [8,14,1,1,3],[23,14,1,1,3],[14,8,1,1,3],[17,8,1,1,3],[14,23,1,1,3],[17,23,1,1,3],[8,17,1,1,3],[23,17,1,1,3]
+  ].forEach(function (b) { rect(b[0], b[1], b[2], b[3], b[4]); });
+  var COL = { 1: [96, 112, 135], 2: [47, 181, 160], 3: [217, 130, 43], 4: [176, 79, 208] };
+  var SPAWNS = [[2,2],[29,2],[2,29],[29,29],[16,5],[16,26],[5,16],[26,16],[9,9],[22,22],[9,22],[22,9]];
+  var PICK_POS = [[7,7],[24,7],[7,24],[24,24],[16,10],[16,21]];
+
+  function isWall(x, y) {
+    if (x < 0 || y < 0) return true;
+    var cx = x | 0, cy = y | 0;
+    if (cx >= MW || cy >= MH) return true;
+    return map[cy * MW + cx] !== 0;
+  }
+  function blocked(x, y, r) { return isWall(x - r, y - r) || isWall(x + r, y - r) || isWall(x - r, y + r) || isWall(x + r, y + r); }
+  function moveEntity(e, dx, dy, r) {
+    var nx = e.x + dx; if (!blocked(nx, e.y, r)) e.x = nx;
+    var ny = e.y + dy; if (!blocked(e.x, ny, r)) e.y = ny;
+  }
+
+  /* ---------- ray casting (DDA) ---------- */
+  var rd = 0, rs = 0, rt = 1, ru = 0;
+  function cast(px, py, dx, dy) {
+    var mx = px | 0, my = py | 0;
+    var ddx = dx === 0 ? 1e30 : Math.abs(1 / dx), ddy = dy === 0 ? 1e30 : Math.abs(1 / dy);
+    var sx, sy, sdx, sdy;
+    if (dx < 0) { sx = -1; sdx = (px - mx) * ddx; } else { sx = 1; sdx = (mx + 1 - px) * ddx; }
+    if (dy < 0) { sy = -1; sdy = (py - my) * ddy; } else { sy = 1; sdy = (my + 1 - py) * ddy; }
+    var side = 0, hit = 0, guard = 0;
+    while (!hit && guard++ < 80) {
+      if (sdx < sdy) { sdx += ddx; mx += sx; side = 0; } else { sdy += ddy; my += sy; side = 1; }
+      if (mx < 0 || my < 0 || mx >= MW || my >= MH) { hit = 1; rt = 1; break; }
+      var t = map[my * MW + mx];
+      if (t) { hit = 1; rt = t; }
+    }
+    rd = side === 0 ? sdx - ddx : sdy - ddy;
+    rs = side;
+    var wx = side === 0 ? py + rd * dy : px + rd * dx;
+    ru = wx - Math.floor(wx);
+    return rd;
+  }
+
+  /* ---------- helpers ---------- */
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function dist(ax, ay, bx, by) { return Math.hypot(ax - bx, ay - by); }
+
+  /* ---------- audio ---------- */
+  var AC = null, muted = false;
+  try { muted = localStorage.getItem('gf_muted') === '1'; } catch (e) {}
+  function audio() {
+    if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { AC = null; } }
+    return AC;
+  }
+  function tone(f0, f1, dur, type, vol) {
+    if (muted) return;
+    var a = audio(); if (!a) return;
+    try {
+      var o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+      o.type = type || 'square';
+      o.frequency.setValueAtTime(f0, t);
+      o.frequency.exponentialRampToValueAtTime(Math.max(30, f1), t + dur);
+      g.gain.setValueAtTime(vol, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      o.connect(g); g.connect(a.destination);
+      o.start(t); o.stop(t + dur + 0.02);
+    } catch (e) {}
+  }
+
+  /* ---------- settings ---------- */
+  var DIFF = {
+    easy:   { bots: 5, acc: 0.22, dmg: 4, rate: 0.95, react: 0.55 },
+    normal: { bots: 7, acc: 0.34, dmg: 6, rate: 0.70, react: 0.38 },
+    hard:   { bots: 9, acc: 0.50, dmg: 8, rate: 0.50, react: 0.22 }
+  };
+  var diffKey = 'normal', LIMIT = 25, sens = 1;
+  try {
+    var ss = parseFloat(localStorage.getItem('gf_sens')); if (ss >= 0.3 && ss <= 2) sens = ss;
+    var dk = localStorage.getItem('gf_diff'); if (DIFF[dk]) diffKey = dk;
+  } catch (e) {}
+
+  /* ---------- weapons ---------- */
+  var W = [
+    { n: 'Pulse Rifle',    auto: true,  dmg: 12, pel: 1, spr: 0.018, dl: 0.10, mag: 30, rl: 1.6, fall: 0 },
+    { n: 'Scatter Cannon', auto: false, dmg: 9,  pel: 8, spr: 0.085, dl: 0.85, mag: 6,  rl: 2.1, fall: 1 },
+    { n: 'Rail Lance',     auto: false, dmg: 80, pel: 1, spr: 0,     dl: 1.25, mag: 5,  rl: 2.0, fall: 0 }
+  ];
+
+  /* ---------- entities ---------- */
+  var P = { x: 16.5, y: 16.5, a: 0, pitch: 0, z: 0.5, vz: 0, hp: 100, dead: false, rt: 0, inv: 0,
+            kills: 0, deaths: 0, shots: 0, hits: 0, w: 0, ammo: [30, 6, 5], reload: 0, cd: 0, bob: 0,
+            kick: 0, flashT: 0, lastHurt: 0, moving: false, time: 0 };
+  var A = { x: 16.5, y: 10.5, a: 0, pitch: 0, z: 0.5 };   // attract-mode camera
+  var cam = A;
+  var bots = [], pickups = [], parts = [];
+  var NAMES = ['Axle', 'Bolt', 'Cinder', 'Dyna', 'Echo', 'Flux', 'Gizmo', 'Hex', 'Ion'];
+  var BOT_R = 0.3, BOT_H = 0.95;
+  var queue = new Int16Array(MW * MH);
+  var playerField = new Int16Array(MW * MH), playerCell = -1, fieldT = 0;
+
+  function bfs(tx, ty, out) {
+    var i, n = MW * MH;
+    for (i = 0; i < n; i++) out[i] = -1;
+    var head = 0, tail = 0, start = ty * MW + tx;
+    if (map[start]) return;
+    out[start] = 0; queue[tail++] = start;
+    while (head < tail) {
+      var c = queue[head++], cx = c % MW, cy = (c / MW) | 0, d = out[c] + 1, nc;
+      if (cx > 0 && out[nc = c - 1] < 0 && !map[nc]) { out[nc] = d; queue[tail++] = nc; }
+      if (cx < MW - 1 && out[nc = c + 1] < 0 && !map[nc]) { out[nc] = d; queue[tail++] = nc; }
+      if (cy > 0 && out[nc = c - MW] < 0 && !map[nc]) { out[nc] = d; queue[tail++] = nc; }
+      if (cy < MH - 1 && out[nc = c + MW] < 0 && !map[nc]) { out[nc] = d; queue[tail++] = nc; }
+    }
+  }
+  function randomOpenCell() {
+    for (var i = 0; i < 200; i++) {
+      var x = 1 + ((Math.random() * (MW - 2)) | 0), y = 1 + ((Math.random() * (MH - 2)) | 0);
+      if (!map[y * MW + x]) return [x, y];
+    }
+    return [16, 5];
+  }
+  function stepAlong(b, field, sp, dt) {
+    var cx = b.x | 0, cy = b.y | 0, c = cy * MW + cx, cur = field[c];
+    if (cur < 0) return false;
+    if (cur === 0) return true;
+    var best = cur, bx = cx, by = cy, nb = [[cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]];
+    for (var i = 0; i < 4; i++) {
+      var nx = nb[i][0], ny = nb[i][1];
+      if (nx < 0 || ny < 0 || nx >= MW || ny >= MH) continue;
+      var v = field[ny * MW + nx];
+      if (v >= 0 && v < best) { best = v; bx = nx; by = ny; }
+    }
+    var tx = bx + 0.5, ty = by + 0.5, dx = tx - b.x, dy = ty - b.y, d = Math.hypot(dx, dy) || 1;
+    moveEntity(b, dx / d * sp * dt, dy / d * sp * dt, 0.26);
+    return false;
+  }
+
+  function makeBot(i) {
+    var b = { id: i, name: NAMES[i % NAMES.length], x: 2.5, y: 2.5, hp: 60, dead: false, rt: 0, cd: 1, seen: 0,
+              strafe: 1, strafeT: 0, flash: 0, mode: 'roam', hunt: 0, field: new Int16Array(MW * MH), wp: -1, v: i % 4 };
+    spawnBot(b, true);
+    return b;
+  }
+  function spawnBot(b, first) {
+    var best = null, bestD = -1, i;
+    for (i = 0; i < 8; i++) {
+      var s = SPAWNS[(Math.random() * SPAWNS.length) | 0];
+      var d = dist(s[0] + 0.5, s[1] + 0.5, P.x, P.y);
+      if (first || d > 12) { best = s; break; }
+      if (d > bestD) { bestD = d; best = s; }
+    }
+    b.x = best[0] + 0.5; b.y = best[1] + 0.5; b.hp = 60; b.dead = false; b.cd = rnd(0.8, 1.8); b.seen = 0;
+    b.mode = 'roam'; b.hunt = 0; b.wp = -1;
+  }
+
+  /* ---------- bot sprites (drawn once, original art) ---------- */
+  var BODY = ['#e4572e', '#f2a541', '#4c9be8', '#a45ee5'];
+  var sprites = [];
+  function makeSprite(body) {
+    var c = document.createElement('canvas'); c.width = 64; c.height = 96;
+    var g = c.getContext('2d');
+    g.fillStyle = '#1b222b'; g.fillRect(20, 70, 9, 24); g.fillRect(35, 70, 9, 24);
+    g.fillStyle = '#2b3440'; g.fillRect(18, 90, 13, 6); g.fillRect(33, 90, 13, 6);
+    g.fillStyle = body; g.fillRect(14, 34, 36, 40);
+    g.fillStyle = 'rgba(255,255,255,0.25)'; g.fillRect(14, 34, 36, 6);
+    g.fillStyle = '#1b222b'; g.fillRect(24, 46, 16, 14);
+    g.fillStyle = '#7df9ff'; g.fillRect(28, 50, 8, 6);
+    g.fillStyle = body; g.fillRect(5, 38, 9, 28); g.fillRect(50, 38, 9, 28);
+    g.fillStyle = '#2b3440'; g.fillRect(52, 54, 12, 7);
+    g.fillStyle = '#39465a'; g.fillRect(19, 8, 26, 26);
+    g.fillStyle = '#7df9ff'; g.fillRect(23, 16, 18, 8);
+    g.fillStyle = '#0b1118'; g.fillRect(28, 18, 3, 4); g.fillRect(34, 18, 3, 4);
+    g.fillStyle = '#ffb347'; g.fillRect(31, 0, 3, 9); g.fillRect(29, 0, 7, 3);
+    return c;
+  }
+  BODY.forEach(function (c) { sprites.push(makeSprite(c)); });
+
+  /* ---------- particles ---------- */
+  function burst(x, y, z, color, n, spd) {
+    for (var i = 0; i < n && parts.length < 220; i++) {
+      var a = Math.random() * 6.2832, s = rnd(0.5, 1) * spd;
+      parts.push({ x: x, y: y, z: z, vx: Math.cos(a) * s, vy: Math.sin(a) * s, vz: rnd(0.5, 2.2), life: rnd(0.3, 0.7), c: color });
+    }
+  }
+
+  /* ---------- game flow ---------- */
+  var state = 'menu', locked = false, noLock = false, dirty = true, menuT = 0;
+  var keys = {}, mouseDown = false, msgT = 0, hudT = 0, miniT = 0;
+  var best = {};
+  try { best = JSON.parse(localStorage.getItem('gf_best') || '{}') || {}; } catch (e) { best = {}; }
+
+  function showMsg(t) { var m = $('msg'); m.textContent = t; msgT = 2.2; }
+  function fmt(t) { var s = t | 0, m = (s / 60) | 0; s = s % 60; return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s; }
+
+  function resetPickups() {
+    pickups = PICK_POS.map(function (p) { return { x: p[0] + 0.5, y: p[1] + 0.5, on: true, rt: 0 }; });
+  }
+  function startGame() {
+    var cfg = DIFF[diffKey];
+    var s0 = SPAWNS[(Math.random() * SPAWNS.length) | 0];
+    P.x = s0[0] + 0.5; P.y = s0[1] + 0.5; P.a = rnd(0, 6.28); P.pitch = 0; P.z = 0.5; P.vz = 0; P.hp = 100; P.dead = false; P.inv = 1.5;
+    P.kills = 0; P.deaths = 0; P.shots = 0; P.hits = 0; P.w = 0; P.ammo = [30, 6, 5]; P.reload = 0; P.cd = 0; P.time = 0;
+    P.lastHurt = -99;
+    bots = []; for (var i = 0; i < cfg.bots; i++) bots.push(makeBot(i));
+    resetPickups(); parts = [];
+    cam = P; state = 'play'; dirty = true;
+    $('ov-menu').classList.add('hide'); $('ov-pause').classList.add('hide'); $('ov-end').classList.add('hide');
+    $('hud').classList.remove('hide');
+    keys = {}; mouseDown = false;
+    lockPointer();
+    showMsg('Eliminate ' + LIMIT + ' bots');
+  }
+  function lockPointer() {
+    if (cv.requestPointerLock) {
+      try { var r = cv.requestPointerLock(); if (r && r.catch) r.catch(function () {}); } catch (e) {}
+    } else { noLock = true; }
+  }
+  function endGame() {
+    state = 'won'; dirty = true;
+    try { if (document.exitPointerLock) document.exitPointerLock(); } catch (e) {}
+    var acc = P.shots ? Math.round(100 * P.hits / P.shots) : 0;
+    var key = diffKey, prev = best[key], isBest = !prev || P.time < prev;
+    if (isBest) { best[key] = Math.round(P.time * 10) / 10; try { localStorage.setItem('gf_best', JSON.stringify(best)); } catch (e) {} }
+    $('end-title').textContent = 'Victory!';
+    $('e-time').textContent = fmt(P.time);
+    $('e-kd').textContent = P.kills + ' / ' + P.deaths;
+    $('e-acc').textContent = acc + '%';
+    $('e-best').textContent = (isBest ? 'New best time on ' : 'Best time on ') + key + ': ' + fmt(best[key]);
+    $('hud').classList.add('hide');
+    $('ov-end').classList.remove('hide');
+    updateBestLine();
+  }
+  function updateBestLine() {
+    var b = best[diffKey];
+    $('bestline').textContent = b ? 'Best time on ' + diffKey + ': ' + fmt(b) : '';
+  }
+
+  function respawnPlayer() {
+    var bestS = SPAWNS[0], bestD = -1;
+    SPAWNS.forEach(function (s) {
+      var m = 999;
+      bots.forEach(function (b) { if (!b.dead) m = Math.min(m, dist(s[0] + 0.5, s[1] + 0.5, b.x, b.y)); });
+      if (m > bestD) { bestD = m; bestS = s; }
+    });
+    P.x = bestS[0] + 0.5; P.y = bestS[1] + 0.5; P.hp = 100; P.dead = false; P.inv = 1.5; P.z = 0.5; P.vz = 0;
+    P.ammo = [30, 6, 5]; P.reload = 0; P.cd = 0; P.pitch = 0;
+    showMsg('Respawned');
+  }
+  function hurtPlayer(d) {
+    if (P.dead || P.inv > 0) return;
+    P.hp -= d; P.lastHurt = P.time;
+    var e = $('dmg'); e.classList.add('on'); setTimeout(function () { e.classList.remove('on'); }, 60);
+    tone(160, 70, 0.15, 'sawtooth', 0.12);
+    if (P.hp <= 0) {
+      P.hp = 0; P.dead = true; P.rt = 2.2; P.deaths++; P.z = 0.18;
+      showMsg('You were eliminated');
+      tone(300, 40, 0.5, 'sawtooth', 0.15);
+    }
+  }
+  function killBot(b) {
+    b.dead = true; b.rt = 3;
+    burst(b.x, b.y, 0.5, BODY[b.v], 26, 3.2);
+    P.kills++;
+    showMsg('You eliminated ' + b.name);
+    tone(520, 1040, 0.18, 'triangle', 0.14);
+    if (P.kills >= LIMIT) endGame();
+  }
+  function damageBot(b, d) {
+    b.hp -= d; b.mode = 'hunt'; b.hunt = 8;
+    if (b.hp <= 0) killBot(b);
+  }
+
+  /* ---------- player actions ---------- */
+  function startReload() {
+    var w = W[P.w];
+    if (P.reload > 0 || P.ammo[P.w] >= w.mag) return;
+    P.reload = w.rl;
+    tone(300, 200, 0.08, 'square', 0.06);
+  }
+  function setWeapon(i) {
+    if (i === P.w || i < 0 || i >= W.length) return;
+    P.w = i; P.reload = 0; P.cd = 0.25;
+    tone(420, 520, 0.05, 'square', 0.05);
+  }
+  function fire() {
+    var w = W[P.w];
+    if (P.dead || P.reload > 0 || P.cd > 0) return;
+    if (P.ammo[P.w] <= 0) { startReload(); return; }
+    P.ammo[P.w]--; P.cd = w.dl; P.kick = 1; P.flashT = 0.07; P.shots++;
+    var hitAny = false;
+    for (var i = 0; i < w.pel; i++) {
+      var a = P.a + (Math.random() * 2 - 1) * w.spr;
+      var dx = Math.cos(a), dy = Math.sin(a);
+      cast(P.x, P.y, dx, dy);
+      var wd = rd, best = null, bt = wd;
+      for (var j = 0; j < bots.length; j++) {
+        var b = bots[j]; if (b.dead) continue;
+        var rx = b.x - P.x, ry = b.y - P.y, t = rx * dx + ry * dy;
+        if (t <= 0 || t >= bt) continue;
+        if (Math.abs(rx * dy - ry * dx) > BOT_R) continue;
+        var hgt = P.z + (P.pitch / FOCAL) * t;
+        if (hgt < 0 || hgt > BOT_H) continue;
+        best = b; bt = t;
+      }
+      if (best) {
+        hitAny = true;
+        var dmg = w.dmg * (w.fall ? Math.max(0.25, 1 - bt / 12) : 1);
+        burst(P.x + dx * bt, P.y + dy * bt, clamp(P.z + (P.pitch / FOCAL) * bt, 0.1, 0.9), '#ffd166', 4, 1.6);
+        damageBot(best, dmg);
+      } else {
+        var hz = clamp(P.z + (P.pitch / FOCAL) * wd, 0.02, 0.98);
+        burst(P.x + dx * (wd - 0.05), P.y + dy * (wd - 0.05), hz, '#b8c4d4', 2, 0.9);
+      }
+    }
+    if (hitAny) {
+      P.hits++;
+      var h = $('hit'); h.classList.add('on'); setTimeout(function () { h.classList.remove('on'); }, 70);
+    }
+    if (P.w === 0) tone(520, 180, 0.07, 'square', 0.07);
+    else if (P.w === 1) tone(200, 60, 0.22, 'sawtooth', 0.16);
+    else tone(900, 120, 0.3, 'sawtooth', 0.14);
+    if (P.ammo[P.w] === 0) startReload();
+  }
+
+  /* ---------- update ---------- */
+  function updatePlayer(dt) {
+    P.time += dt;
+    P.cd -= dt; P.kick = Math.max(0, P.kick - dt * 6); P.flashT -= dt; P.inv -= dt;
+    if (P.reload > 0) { P.reload -= dt; if (P.reload <= 0) { P.reload = 0; P.ammo[P.w] = W[P.w].mag; } }
+    if (P.dead) {
+      P.rt -= dt; if (P.rt <= 0) respawnPlayer();
+      return;
+    }
+    var fwd = (keys.KeyW || keys.ArrowUp ? 1 : 0) - (keys.KeyS || keys.ArrowDown ? 1 : 0);
+    var str = (keys.KeyD ? 1 : 0) - (keys.KeyA ? 1 : 0);
+    var turn = (keys.ArrowLeft ? 1 : 0) - (keys.ArrowRight ? 1 : 0);
+    P.a += turn * 2.4 * dt;
+    var sp = (keys.ShiftLeft || keys.ShiftRight) ? 6.2 : 4.2;
+    var len = Math.hypot(fwd, str) || 1;
+    P.moving = (fwd !== 0 || str !== 0);
+    var ca = Math.cos(P.a), sa = Math.sin(P.a);
+    moveEntity(P, (ca * fwd + sa * str) / len * sp * dt, (sa * fwd - ca * str) / len * sp * dt, 0.25);
+    if (P.moving && P.z <= 0.5001) P.bob += sp * dt * 1.6;
+    if (keys.Space && P.z <= 0.5001) P.vz = 2.3;
+    if (P.vz !== 0 || P.z > 0.5) {
+      P.vz -= 8.5 * dt; P.z += P.vz * dt;
+      if (P.z <= 0.5) { P.z = 0.5; P.vz = 0; }
+    }
+    if (mouseDown && W[P.w].auto) fire();
+    if (P.hp < 100 && P.time - P.lastHurt > 5) P.hp = Math.min(100, P.hp + 4 * dt);
+    for (var i = 0; i < pickups.length; i++) {
+      var k = pickups[i];
+      if (!k.on) { k.rt -= dt; if (k.rt <= 0) k.on = true; continue; }
+      if (P.hp < 100 && dist(k.x, k.y, P.x, P.y) < 0.65) {
+        k.on = false; k.rt = 20; P.hp = Math.min(100, P.hp + 40);
+        showMsg('+40 health'); tone(660, 990, 0.12, 'triangle', 0.1);
+      }
+    }
+  }
+
+  function updateBot(b, dt, cfg) {
+    if (b.dead) { b.rt -= dt; if (b.rt <= 0) spawnBot(b, false); return; }
+    b.cd -= dt; b.flash -= dt; b.hunt -= dt;
+    var dx = P.x - b.x, dy = P.y - b.y, d = Math.hypot(dx, dy) || 0.001;
+    var los = false;
+    if (!P.dead && d < 22) { cast(b.x, b.y, dx / d, dy / d); los = rd >= d; }
+    if (los || d < 4) { b.mode = 'hunt'; b.hunt = 6; }
+    if (b.hunt <= 0) b.mode = 'roam';
+    var sp = 2.6;
+    if (los && d < 20) {
+      b.seen += dt;
+      b.strafeT -= dt;
+      if (b.strafeT <= 0) { b.strafeT = rnd(0.6, 1.6); b.strafe = Math.random() < 0.5 ? -1 : 1; }
+      var ux = dx / d, uy = dy / d, want = d > 7 ? 1 : (d < 4 ? -1 : 0);
+      var mx = ux * want - uy * b.strafe * 0.9, my = uy * want + ux * b.strafe * 0.9;
+      var ml = Math.hypot(mx, my);
+      if (ml > 0.01) moveEntity(b, mx / ml * sp * dt, my / ml * sp * dt, 0.26);
+      if (b.cd <= 0 && b.seen > cfg.react && !P.dead) {
+        b.cd = cfg.rate * rnd(0.8, 1.3); b.flash = 0.1;
+        var chance = cfg.acc * (1 - d / 24) * (P.moving ? 0.8 : 1);
+        if (Math.random() < chance) hurtPlayer(cfg.dmg);
+        tone(300, 120, 0.07, 'square', clamp(0.07 * (1 - d / 22), 0.01, 0.07));
+      }
+    } else {
+      b.seen = 0;
+      if (b.mode === 'hunt' && !P.dead) {
+        stepAlong(b, playerField, sp, dt);
+      } else {
+        var cell = (b.y | 0) * MW + (b.x | 0);
+        if (b.wp < 0 || cell === b.wp || b.field[cell] < 0) {
+          var rc = randomOpenCell(); b.wp = rc[1] * MW + rc[0]; bfs(rc[0], rc[1], b.field);
+        }
+        stepAlong(b, b.field, sp * 0.85, dt);
+      }
+    }
+    for (var i = 0; i < bots.length; i++) {
+      var o = bots[i]; if (o === b || o.dead) continue;
+      var ox = b.x - o.x, oy = b.y - o.y, od = Math.hypot(ox, oy);
+      if (od < 0.55 && od > 0.001) moveEntity(b, ox / od * 1.2 * dt, oy / od * 1.2 * dt, 0.26);
+    }
+  }
+
+  function update(dt) {
+    updatePlayer(dt);
+    var cfg = DIFF[diffKey];
+    fieldT -= dt;
+    var pc = (P.y | 0) * MW + (P.x | 0);
+    if ((pc !== playerCell && fieldT <= 0) || playerCell < 0) { playerCell = pc; fieldT = 0.3; bfs(P.x | 0, P.y | 0, playerField); }
+    for (var i = 0; i < bots.length; i++) updateBot(bots[i], dt, cfg);
+    for (i = parts.length - 1; i >= 0; i--) {
+      var p = parts[i];
+      p.life -= dt; if (p.life <= 0) { parts.splice(i, 1); continue; }
+      p.x += p.vx * dt; p.y += p.vy * dt; p.vz -= 6 * dt; p.z += p.vz * dt;
+      if (p.z < 0) { p.z = 0; p.vz = -p.vz * 0.3; }
+    }
+    if (msgT > 0) { msgT -= dt; if (msgT <= 0) $('msg').textContent = ''; }
+    hudT -= dt;
+    if (hudT <= 0) { hudT = 0.1; updateHud(); }
+    miniT -= dt;
+    if (miniT <= 0) { miniT = 0.125; drawMini(); }
+  }
+
+  function updateHud() {
+    $('kills').textContent = 'Eliminations ' + P.kills + ' / ' + LIMIT;
+    $('timer').textContent = fmt(P.time);
+    $('hptext').textContent = Math.ceil(P.hp) + ' HP';
+    $('hpfill').style.width = clamp(P.hp, 0, 100) + '%';
+    $('wpn').textContent = W[P.w].n;
+    $('ammo').textContent = P.reload > 0 ? 'Reloading' : String(P.ammo[P.w]);
+  }
+
+  function drawMini() {
+    var s = 128 / MW, x, y, i;
+    mctx.fillStyle = 'rgba(8,12,18,0.85)'; mctx.fillRect(0, 0, 128, 128);
+    for (y = 0; y < MH; y++) for (x = 0; x < MW; x++) {
+      var t = map[y * MW + x]; if (!t) continue;
+      var c = COL[t]; mctx.fillStyle = 'rgb(' + (c[0] >> 1) + ',' + (c[1] >> 1) + ',' + (c[2] >> 1) + ')';
+      mctx.fillRect(x * s, (MH - 1 - y) * s, s + 0.5, s + 0.5);
+    }
+    for (i = 0; i < pickups.length; i++) if (pickups[i].on) { mctx.fillStyle = '#7dff9a'; mctx.fillRect(pickups[i].x * s - 1.5, (MH - pickups[i].y) * s - 1.5, 3, 3); }
+    mctx.fillStyle = '#ff4d4d';
+    for (i = 0; i < bots.length; i++) {
+      var b = bots[i];
+      if (b.dead || dist(b.x, b.y, P.x, P.y) > 14) continue;
+      mctx.fillRect(b.x * s - 2, (MH - b.y) * s - 2, 4, 4);
+    }
+    var px = P.x * s, py = (MH - P.y) * s;
+    mctx.strokeStyle = '#2ee6a6'; mctx.lineWidth = 2; mctx.beginPath();
+    mctx.moveTo(px, py); mctx.lineTo(px + Math.cos(P.a) * 9, py - Math.sin(P.a) * 9); mctx.stroke();
+    mctx.fillStyle = '#ffffff'; mctx.fillRect(px - 2, py - 2, 4, 4);
+  }
+
+  /* ---------- rendering ---------- */
+  function render() {
+    var c = cam, ca = Math.cos(c.a), sa = Math.sin(c.a);
+    var dirX = ca, dirY = sa, plX = sa * PL, plY = -ca * PL;
+    var horizon = Math.round(RH / 2 + c.pitch), z = c.z, x, i;
+
+    var ceilH = clamp(horizon, 0, RH);
+    var g1 = ctx.createLinearGradient(0, 0, 0, Math.max(1, horizon));
+    g1.addColorStop(0, '#070b16'); g1.addColorStop(1, '#1d2d4a');
+    ctx.fillStyle = g1; ctx.fillRect(0, 0, RW, ceilH);
+    var g2 = ctx.createLinearGradient(0, horizon, 0, Math.max(horizon + 1, RH));
+    g2.addColorStop(0, '#1f2b3b'); g2.addColorStop(1, '#0a0f16');
+    ctx.fillStyle = g2; ctx.fillRect(0, ceilH, RW, RH - ceilH);
+
+    for (x = 0; x < RW; x++) {
+      var camX = 2 * x / RW - 1;
+      var d = cast(c.x, c.y, dirX + plX * camX, dirY + plY * camX);
+      if (d < 0.05) d = 0.05;
+      zbuf[x] = d;
+      var lh = FOCAL / d, top = horizon - (1 - z) * lh, bot = horizon + z * lh;
+      var t0 = top < 0 ? 0 : top, b0 = bot > RH ? RH : bot;
+      if (b0 <= t0) continue;
+      var col = COL[rt] || COL[1];
+      var sh = 1 / (1 + d * 0.1); if (rs === 1) sh *= 0.8;
+      var u = ru; if (u < 0.03 || u > 0.97 || (u > 0.485 && u < 0.515)) sh *= 0.72;
+      var f = d / 28; if (f > 1) f = 1;
+      var k = 1 - f;
+      ctx.fillStyle = 'rgb(' + ((col[0] * sh * k + 14 * f) | 0) + ',' + ((col[1] * sh * k + 22 * f) | 0) + ',' + ((col[2] * sh * k + 36 * f) | 0) + ')';
+      ctx.fillRect(x, t0, 1, b0 - t0);
+      if (lh > 10) {
+        ctx.fillStyle = 'rgba(255,255,255,0.28)';
+        ctx.fillRect(x, top + lh * 0.07, 1, Math.max(1, lh * 0.035));
+      }
+    }
+
+    /* sprites: bots + pickups, far to near */
+    var invD = 1 / PL, list = [];
+    for (i = 0; i < bots.length; i++) {
+      var b = bots[i]; if (b.dead) continue;
+      var rx = b.x - c.x, ry = b.y - c.y;
+      list.push({ k: 0, o: b, tx: invD * (dirY * rx - dirX * ry), ty: invD * (-plY * rx + plX * ry) });
+    }
+    for (i = 0; i < pickups.length; i++) {
+      var pk = pickups[i]; if (!pk.on) continue;
+      var qx = pk.x - c.x, qy = pk.y - c.y;
+      list.push({ k: 1, o: pk, tx: invD * (dirY * qx - dirX * qy), ty: invD * (-plY * qx + plX * qy) });
+    }
+    list.sort(function (a, b) { return b.ty - a.ty; });
+    for (i = 0; i < list.length; i++) {
+      var s = list[i]; if (s.ty < 0.15) continue;
+      var sx = (RW / 2) * (1 + s.tx / s.ty);
+      if (s.k === 0) {
+        var h = FOCAL * BOT_H / s.ty, w = h * (64 / 96);
+        var bottom = horizon + z * FOCAL / s.ty, topY = bottom - h;
+        var x0 = Math.floor(sx - w / 2), x1 = Math.floor(sx + w / 2);
+        var run = -1, xx;
+        for (xx = Math.max(0, x0); xx <= Math.min(RW - 1, x1) + 1; xx++) {
+          var vis = xx <= x1 && xx < RW && s.ty < zbuf[xx];
+          if (vis && run < 0) run = xx;
+          if (!vis && run >= 0) {
+            var sw = xx - run;
+            ctx.drawImage(sprites[s.o.v], (run - x0) / w * 64, 0, Math.max(0.5, sw / w * 64), 96, run, topY, sw, h);
+            run = -1;
+          }
+        }
+        if (s.o.flash > 0) {
+          var gx = Math.floor(sx + w * 0.4);
+          if (gx >= 0 && gx < RW && s.ty < zbuf[gx]) {
+            ctx.fillStyle = '#ffe27a';
+            var fs = Math.max(2, h * 0.09);
+            ctx.fillRect(gx, topY + h * 0.55, fs, fs);
+          }
+        }
+      } else {
+        var cx = Math.floor(sx);
+        if (cx < 0 || cx >= RW || s.ty >= zbuf[cx]) continue;
+        var size = FOCAL * 0.3 / s.ty, hh = 0.32 + 0.05 * Math.sin(menuT * 3 + s.o.x + P.time * 3);
+        var sy = horizon + (z - hh) * FOCAL / s.ty;
+        ctx.fillStyle = '#e8eef5'; ctx.fillRect(sx - size / 2, sy - size / 2, size, size);
+        ctx.fillStyle = '#ff4d4d';
+        ctx.fillRect(sx - size * 0.1, sy - size * 0.36, size * 0.2, size * 0.72);
+        ctx.fillRect(sx - size * 0.36, sy - size * 0.1, size * 0.72, size * 0.2);
+      }
+    }
+
+    /* particles */
+    for (i = 0; i < parts.length; i++) {
+      var p = parts[i], prx = p.x - c.x, pry = p.y - c.y;
+      var ptx = invD * (dirY * prx - dirX * pry), pty = invD * (-plY * prx + plX * pry);
+      if (pty < 0.1) continue;
+      var pc = Math.floor((RW / 2) * (1 + ptx / pty));
+      if (pc < 0 || pc >= RW || pty >= zbuf[pc]) continue;
+      var py = horizon + (z - p.z) * FOCAL / pty, ps = Math.max(1.5, FOCAL * 0.035 / pty);
+      ctx.fillStyle = p.c; ctx.fillRect(pc - ps / 2, py - ps / 2, ps, ps);
+    }
+
+    if (cam === P) drawGun();
+  }
+
+  function drawGun() {
+    if (P.dead) return;
+    var bx = Math.sin(P.bob) * 5, by = Math.abs(Math.cos(P.bob)) * 4;
+    var gx = RW / 2 + 70 + bx, gy = RH + 6 + by + P.kick * 12;
+    if (P.reload > 0) gy += 40 * Math.sin(Math.min(1, (W[P.w].rl - P.reload) / W[P.w].rl * 3.14159) * 1) ;
+    if (P.w === 0) {
+      ctx.fillStyle = '#2b3440'; ctx.fillRect(gx - 16, gy - 70, 32, 70);
+      ctx.fillStyle = '#2ee6a6'; ctx.fillRect(gx - 16, gy - 70, 32, 4);
+      ctx.fillStyle = '#1b222b'; ctx.fillRect(gx - 6, gy - 100, 12, 32);
+      ctx.fillStyle = '#39465a'; ctx.fillRect(gx - 12, gy - 60, 6, 40);
+    } else if (P.w === 1) {
+      ctx.fillStyle = '#3a2a1b'; ctx.fillRect(gx - 22, gy - 62, 44, 62);
+      ctx.fillStyle = '#ffb347'; ctx.fillRect(gx - 22, gy - 62, 44, 5);
+      ctx.fillStyle = '#1b222b'; ctx.fillRect(gx - 16, gy - 92, 13, 32); ctx.fillRect(gx + 3, gy - 92, 13, 32);
+    } else {
+      ctx.fillStyle = '#26303d'; ctx.fillRect(gx - 10, gy - 92, 20, 92);
+      ctx.fillStyle = '#7df9ff'; ctx.fillRect(gx - 2, gy - 104, 4, 70);
+      ctx.fillStyle = '#39465a'; ctx.fillRect(gx - 16, gy - 50, 6, 36); ctx.fillRect(gx + 10, gy - 50, 6, 36);
+    }
+    if (P.flashT > 0) {
+      var top = P.w === 0 ? gy - 100 : P.w === 1 ? gy - 92 : gy - 104;
+      ctx.fillStyle = 'rgba(255,226,122,0.95)'; ctx.fillRect(gx - 10, top - 16, 20, 18);
+      ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(gx - 4, top - 10, 8, 10);
+    }
+  }
+
+  /* ---------- loop ---------- */
+  var last = 0;
+  function frame(ts) {
+    var dt = Math.min(0.05, (ts - last) / 1000 || 0); last = ts;
+    if (state === 'play') { update(dt); render(); }
+    else if (state === 'menu') { menuT += dt; A.a += dt * 0.25; render(); }
+    else if (dirty) { render(); dirty = false; }
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------- input ---------- */
+  document.addEventListener('pointerlockchange', function () {
+    locked = document.pointerLockElement === cv;
+    if (!locked && state === 'play') {
+      state = 'paused'; dirty = true; mouseDown = false; keys = {};
+      $('ov-pause').classList.remove('hide');
+    } else if (locked && state === 'paused') {
+      state = 'play'; $('ov-pause').classList.add('hide');
+    }
+  });
+  document.addEventListener('pointerlockerror', function () {
+    if (state === 'play') { state = 'paused'; $('ov-pause').classList.remove('hide'); dirty = true; }
+  });
+  document.addEventListener('mousemove', function (e) {
+    if (state !== 'play' || (!locked && !noLock)) return;
+    P.a -= (e.movementX || 0) * 0.0022 * sens;
+    P.pitch = clamp(P.pitch - (e.movementY || 0) * 0.45 * sens, -150, 150);
+  });
+  cv.addEventListener('mousedown', function (e) {
+    if (state === 'paused') { lockPointer(); return; }
+    if (state !== 'play' || e.button !== 0) return;
+    mouseDown = true;
+    fire();
+  });
+  document.addEventListener('mouseup', function (e) { if (e.button === 0) mouseDown = false; });
+  cv.addEventListener('wheel', function (e) {
+    if (state !== 'play') return;
+    e.preventDefault();
+    setWeapon((P.w + (e.deltaY > 0 ? 1 : W.length - 1)) % W.length);
+  }, { passive: false });
+  cv.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  window.addEventListener('keydown', function (e) {
+    if (state !== 'play') return;
+    if (e.code === 'Space' || e.code.indexOf('Arrow') === 0) e.preventDefault();
+    if (e.repeat) return;
+    keys[e.code] = true;
+    if (e.code === 'KeyR') startReload();
+    else if (e.code === 'Digit1') setWeapon(0);
+    else if (e.code === 'Digit2') setWeapon(1);
+    else if (e.code === 'Digit3') setWeapon(2);
+    else if (e.code === 'KeyM') toggleMute();
+    else if (e.code === 'KeyF') toggleFullscreen();
+  });
+  window.addEventListener('keyup', function (e) { keys[e.code] = false; });
+  window.addEventListener('blur', function () { keys = {}; mouseDown = false; });
+
+  function toggleMute() {
+    muted = !muted;
+    try { localStorage.setItem('gf_muted', muted ? '1' : '0'); } catch (e) {}
+    $('mute').textContent = muted ? 'Sound: Off' : 'Sound: On';
+    $('mute').setAttribute('aria-pressed', muted ? 'true' : 'false');
+  }
+  $('mute').addEventListener('click', toggleMute);
+  $('mute').textContent = muted ? 'Sound: Off' : 'Sound: On';
+  function toggleFullscreen() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (wrap.requestFullscreen) wrap.requestFullscreen();
+    } catch (e) {}
+  }
+  $('fs').addEventListener('click', toggleFullscreen);
+
+  function setDiff(k) {
+    diffKey = k;
+    ['easy', 'normal', 'hard'].forEach(function (n) { $('d-' + n).setAttribute('aria-pressed', n === k ? 'true' : 'false'); });
+    try { localStorage.setItem('gf_diff', k); } catch (e) {}
+    updateBestLine();
+  }
+  $('d-easy').addEventListener('click', function () { setDiff('easy'); });
+  $('d-normal').addEventListener('click', function () { setDiff('normal'); });
+  $('d-hard').addEventListener('click', function () { setDiff('hard'); });
+  setDiff(diffKey);
+
+  $('sens').value = String(sens); $('sens-val').textContent = sens.toFixed(1);
+  $('sens').addEventListener('input', function () {
+    sens = parseFloat(this.value) || 1; $('sens-val').textContent = sens.toFixed(1);
+    try { localStorage.setItem('gf_sens', String(sens)); } catch (e) {}
+  });
+
+  $('play').addEventListener('click', startGame);
+  $('again').addEventListener('click', startGame);
+  $('resume').addEventListener('click', function () {
+    if (cv.requestPointerLock) lockPointer(); else { state = 'play'; $('ov-pause').classList.add('hide'); }
+  });
+
+  try {
+    if (window.matchMedia && window.matchMedia('(pointer:coarse)').matches) {
+      $('touchnote').classList.remove('hide'); $('play').classList.add('hide');
+    }
+  } catch (e) {}
+
+  resetPickups();
+  updateBestLine();
+  requestAnimationFrame(frame);
+
+  if (window.GA_DEBUG) {
+    window.GA_DEBUG = { P: P, bots: function () { return bots; }, state: function () { return state; }, update: update, render: render,
+                        fire: fire, startGame: startGame, cast: cast, setCam: function (o) { cam = o; }, A: A, map: map, DIFF: DIFF, W: W,
+                        setState: function (s) { state = s; }, key: function (k, v) { keys[k] = v; }, pickups: function () { return pickups; } };
+  }
+})();
+</script>
+</body>
+</html>
